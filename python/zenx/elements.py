@@ -26,6 +26,14 @@ class Component:
     def __repr__(self):
         return self.abstract or "Component()"
 
+    def to_dict(self) -> dict:
+        return {
+            "tag": self.tag,
+            "text_content": self.text_content,
+            "maps": self.maps,
+            "vault": self.vault,
+        }
+
 
 @overload
 def title(a: int, b: str) -> Component:

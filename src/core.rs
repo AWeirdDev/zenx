@@ -83,17 +83,28 @@ async fn handler(
 }
 
 async fn ws_handler(mut socket: WebSocket<ServerMsg, ClientMsg>, ph: Arc<Py<PyAny>>) {
+    let mut page_components: Vec<RenderComponent> = Vec::new();
+
     Python::with_gil(|py| {
         if let Ok(result) = ph.call1(
             py,
             (serde_json::to_string(&Bridge {
-                action: Action::Outline,
+                action: Action::OutlineRequest,
             })
             .unwrap(),),
         ) {
             let r: Py<PyString> = result.extract(py).unwrap();
-            let value: serde_json::Value = serde_json::from_str(r.to_str(py).unwrap()).unwrap();
-            info!(format!("(ws) 🐍  Python: {}", value.as_str().unwrap()));
+            let value: Bridge = serde_json::from_str(r.to_str(py).unwrap()).unwrap();
+            match value.action {
+                Action::Outline(components) => components.iter().for_each(|item| {
+                    page_components.push(RenderComponent {
+                        id_selector: s!("def:app"),
+                        text_content: item.text_content.to_owned(),
+                        tag: item.tag.to_owned(),
+                    })
+                }),
+                _ => return,
+            }
         } else {
             info!("(ws) 🐍  Python: error");
         }
@@ -102,20 +113,7 @@ async fn ws_handler(mut socket: WebSocket<ServerMsg, ClientMsg>, ph: Arc<Py<PyAn
     socket
         .send(Message::Item(ServerMsg {
             d: ServerMsgType::Render {
-                components: vec![
-                    RenderComponent {
-                        id_selector: s!("def:app"),
-                        text_content: s!("Hello, Zenx!"),
-                        tag: s!("h1"),
-                    },
-                    RenderComponent {
-                        id_selector: s!("def:app"),
-                        text_content: s!(
-                            "Zenx is a simple web framework, based on Rust and Python."
-                        ),
-                        tag: s!("p"),
-                    },
-                ],
+                components: page_components.to_owned(),
             },
         }))
         .await
@@ -135,9 +133,9 @@ async fn ws_handler(mut socket: WebSocket<ServerMsg, ClientMsg>, ph: Arc<Py<PyAn
                         .await
                         .ok();
                 }
-                ClientMsgType::Rendered(vaults) => {
+                ClientMsgType::Rendered(_) => {
+                    // vaults received
                     info!("(ws) rendered");
-                    println!("{:?}", vaults);
                 }
             },
             Ok(Message::Close(_)) => {
