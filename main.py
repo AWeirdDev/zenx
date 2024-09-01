@@ -1,9 +1,10 @@
-import python.zenx
+import zenx
 
 
-def impl(payload: str):
-    print(payload)
-    return "\"asdf\""
+@zenx.page()
+def app():
+    zenx.title("Hello, world!")
+    zenx.paragraph("mr. beast!")
 
 
-python.zenx.go(impl)
+zenx.Bridge().start()
