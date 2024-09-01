@@ -1,0 +1,21 @@
+[package]
+name = "zenx"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[lib]
+name = "zenx"
+crate-type = ["cdylib"]
+
+[dependencies]
+axum = { version = "0.7.5", features = ["ws"] }
+axum-typed-websockets = "0.6.0"
+colored = "2.1.0"
+ctrlc = "3.4.5"
+pyo3 = { version = "0.22.0" }
+serde = { version = "1.0.209", features = ["derive"] }
+serde_json = "1.0.127"
+tokio = { version = "1.40.0", features = ["fs", "time"] }
+tokio-util = { version = "0.7.11", features = ["io"] }
+tracing-subscriber = "0.3.18"

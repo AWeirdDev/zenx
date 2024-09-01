@@ -1,0 +1,104 @@
+#app {
+    padding: 5% 20ch;
+}
+
+#__venx_loader {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    z-index: 99999;
+    margin: 32px;
+}
+
+#__venx_loader div {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    background: #202020;
+    color: white;
+    padding: 16px;
+    border-radius: 8px;
+    opacity: 1;
+    transition: all 250ms ease;
+}
+
+#__venx_loader[data-ok="true"] div {
+    opacity: 0;
+    filter: blur(10px);
+    -webkit-filter: blur(5px);
+}
+
+@media (prefers-color-scheme: dark) {
+    #__venx_loader div {
+        background: #fff;
+        color: #202020;
+    }
+}
+
+html[data-theme="dark"] #__venx_loader div {
+    background: #fff;
+    color: #202020;
+}
+
+html[data-theme="light"] #__venx_loader div {
+    background: #202020;
+    color: white;
+}
+
+/* https://github.com/picocss/pico/discussions/482#discussioncomment-9043725 */
+:root {
+    --pico-font-family-sans-serif: Inter, system-ui, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, Helvetica, Arial, "Helvetica Neue", sans-serif, var(--pico-font-family-emoji);
+    --pico-font-size: 87.5%;
+    --pico-line-height: 1.25;
+    --pico-form-element-spacing-vertical: 0.5rem;
+    --pico-form-element-spacing-horizontal: 1.0rem;
+    --pico-border-radius: 0.375rem
+}
+
+@media (min-width:576px) {
+    :root {
+        --pico-font-size: 87.5%
+    }
+}
+
+@media (min-width:768px) {
+    :root {
+        --pico-font-size: 87.5%
+    }
+}
+
+@media (min-width:1024px) {
+    :root {
+        --pico-font-size: 87.5%
+    }
+}
+
+@media (min-width:1280px) {
+    :root {
+        --pico-font-size: 87.5%
+    }
+}
+
+@media (min-width:1536px) {
+    :root {
+        --pico-font-size: 87.5%
+    }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    --pico-font-weight: 600
+}
+
+article {
+    border: 1px solid var(--pico-muted-border-color);
+    border-radius: calc(var(--pico-border-radius) * 2)
+}
+
+article>footer {
+    border-radius: calc(var(--pico-border-radius) * 2)
+}
